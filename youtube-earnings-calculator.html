@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Earnings Calculator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .counter {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 2.5rem;
+            transition: all 0.3s ease;
+        }
+        .counter-small {
+            font-size: 1.5rem;
+        }
+        .counter-container {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .input-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-12">
+        <h1 class="text-4xl font-bold text-center mb-10">YouTube Earnings Calculator</h1>
+        
+        <!-- Input Section -->
+        <div class="input-container mb-10 max-w-3xl mx-auto">
+            <h2 class="text-2xl font-semibold mb-5">Enter YouTuber Details</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block mb-2">Channel Name</label>
+                    <input type="text" id="channelName" class="w-full p-2 bg-gray-800 border border-gray-700 rounded" placeholder="e.g. MrBeast">
+                </div>
+                
+                <div>
+                    <label class="block mb-2">Subscribers</label>
+                    <input type="number" id="subscribers" class="w-full p-2 bg-gray-800 border border-gray-700 rounded" placeholder="e.g. 100000000">
+                </div>
+                
+                <div>
+                    <label class="block mb-2">Avg. Monthly Views</label>
+                    <input type="number" id="monthlyViews" class="w-full p-2 bg-gray-800 border border-gray-700 rounded" placeholder="e.g. 500000000">
+                </div>
+                
+                <div>
+                    <label class="block mb-2">Avg. Engagement Rate (%)</label>
+                    <input type="number" id="engagementRate" class="w-full p-2 bg-gray-800 border border-gray-700 rounded" placeholder="e.g. 8" value="8">
+                </div>
+                
+                <div>
+                    <label class="block mb-2">Est. CPM ($)</label>
+                    <input type="number" id="cpm" class="w-full p-2 bg-gray-800 border border-gray-700 rounded" step="0.01" placeholder="e.g. 4.50" value="4.50">
+                </div>
+                
+                <div>
+                    <label class="block mb-2">Brand Deals ($ per month)</label>
+                    <input type="number" id="brandDeals" class="w-full p-2 bg-gray-800 border border-gray-700 rounded" placeholder="e.g. 500000" value="0">
+                </div>
+            </div>
+            
+            <button id="calculateBtn" class="mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+                Calculate Earnings
+            </button>
+        </div>
+        
+        <!-- Results Display -->
+        <div id="resultsContainer" class="counter-container max-w-4xl mx-auto hidden">
+            <h2 class="text-3xl font-bold mb-6 text-center" id="ytChannelTitle">YouTuber Earnings</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl mb-3 text-gray-400">YouTube Ad Revenue</h3>
+                    <div class="flex items-baseline">
+                        <span class="text-green-400 mr-2">$</span>
+                        <div id="adRevenue" class="counter text-green-400">0</div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-1">per month from views</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl mb-3 text-gray-400">Brand Deals & Sponsorships</h3>
+                    <div class="flex items-baseline">
+                        <span class="text-blue-400 mr-2">$</span>
+                        <div id="brandRevenue" class="counter text-blue-400">0</div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-1">estimated monthly</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl mb-3 text-gray-400">Merchandise (Est.)</h3>
+                    <div class="flex items-baseline">
+                        <span class="text-purple-400 mr-2">$</span>
+                        <div id="merchRevenue" class="counter text-purple-400">0</div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-1">based on audience size</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl mb-3 text-gray-400">Monthly Total</h3>
+                    <div class="flex items-baseline">
+                        <span class="text-yellow-400 mr-2">$</span>
+                        <div id="monthlyTotal" class="counter text-yellow-400">0</div>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-1">combined revenue streams</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8">
+                <h3 class="text-2xl font-bold mb-5 text-center">Real-Time Earnings Counter</h3>
+                
+                <div class="flex flex-col items-center justify-center">
+                    <div class="flex items-baseline mb-2">
+                        <span class="text-2xl text-yellow-400 mr-2">$</span>
+                        <div id="realtimeCounter" class="counter text-yellow-400">0</div>
+                    </div>
+                    <p class="text-gray-400">Earned since you opened this page</p>
+                    
+                    <div class="mt-8 grid grid-cols-3 gap-4 w-full max-w-lg">
+                        <div class="text-center">
+                            <p class="text-gray-400 mb-1">Per Second</p>
+                            <div class="flex items-baseline justify-center">
+                                <span class="text-sm text-green-400 mr-1">$</span>
+                                <div id="perSecond" class="counter counter-small text-green-400">0</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <p class="text-gray-400 mb-1">Per Minute</p>
+                            <div class="flex items-baseline justify-center">
+                                <span class="text-sm text-green-400 mr-1">$</span>
+                                <div id="perMinute" class="counter counter-small text-green-400">0</div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <p class="text-gray-400 mb-1">Per Hour</p>
+                            <div class="flex items-baseline justify-center">
+                                <span class="text-sm text-green-400 mr-1">$</span>
+                                <div id="perHour" class="counter counter-small text-green-400">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <p class="text-sm text-gray-500">Note: These calculations are estimates based on industry averages and may vary.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
